@@ -237,37 +237,40 @@ def install(parser, args, **kwargs):
     reporter.specs = specs
     with reporter:
         if args.overwrite:
-            # If we asked to overwrite an existing spec we must ensure that:
-            # 1. We have only one spec
-            # 2. The spec is already installed
-            assert len(specs) == 1, \
-                "only one spec is allowed when overwriting an installation"
 
-            spec = specs[0]
-            t = spack.store.db.query(spec)
-            assert len(t) == 1, "to overwrite a spec you must install it first"
+            for spec in specs:
+                installed = spack.store.db.query(spec)
+                assert len(installed) <= 1, \
+                    "Error: Multiple installed specs match " \
+                    "concrete spec %s" % spec
 
-            # Give the user a last chance to think about overwriting an already
-            # existing installation
-            if not args.yes_to_all:
-                tty.msg('The following package will be reinstalled:\n')
+                if not args.yes_to_all:
+                    if installed:  # there is an installed spec
+                        tty.msg('The following package will be reinstalled:\n')
+                    else:  # We called --overwrite for a spec not installed.
+                        tty.msg('The following package is not installed and the'
+                                ' --overwrite flag was given. The package will '
+                                'be newly installed:\n')
 
-                display_args = {
-                    'long': True,
-                    'show_flags': True,
-                    'variants': True
-                }
+                    display_args = {
+                        'long': True,
+                        'show_flags': True,
+                        'variants': True
+                    }
+                    
+                    spack.cmd.display_specs([spec], **display_args)
+                    answer = tty.get_yes_or_no(
+                        'Do you want to proceed?', default=False
+                    )
+                    if not answer:
+                        tty.die('Reinstallation aborted.')
 
-                spack.cmd.display_specs(t, **display_args)
-                answer = tty.get_yes_or_no(
-                    'Do you want to proceed?', default=False
-                )
-                if not answer:
-                    tty.die('Reinstallation aborted.')
-
-            with fs.replace_directory_transaction(specs[0].prefix):
-                install_spec(args, kwargs, specs[0])
-
+                if installed:
+                    with fs.replace_directory_transaction(spec.prefix):
+                        install_spec(args, kwargs, spec)
+                else:
+                    install_spec(args, kwargs, spec)
+                    
         else:
             for spec in specs:
                 install_spec(args, kwargs, spec)
