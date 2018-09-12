@@ -248,16 +248,16 @@ def install(parser, args, **kwargs):
                     if installed:  # there is an installed spec
                         tty.msg('The following package will be reinstalled:\n')
                     else:  # We called --overwrite for a spec not installed.
-                        tty.msg('The following package is not installed and the'
-                                ' --overwrite flag was given. The package will '
-                                'be newly installed:\n')
+                        tty.msg('The following package is not installed and '
+                                'the --overwrite flag was given. The package '
+                                'will be newly installed:\n')
 
                     display_args = {
                         'long': True,
                         'show_flags': True,
                         'variants': True
                     }
-                    
+
                     spack.cmd.display_specs([spec], **display_args)
                     answer = tty.get_yes_or_no(
                         'Do you want to proceed?', default=False
@@ -270,7 +270,7 @@ def install(parser, args, **kwargs):
                         install_spec(args, kwargs, spec)
                 else:
                     install_spec(args, kwargs, spec)
-                    
+
         else:
             for spec in specs:
                 install_spec(args, kwargs, spec)

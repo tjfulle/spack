@@ -227,7 +227,7 @@ def test_install_overwrite(
     assert fs.hash_directory(spec.prefix) == expected_md5
     assert fs.hash_directory(spec.prefix) != bad_md5
 
-    
+
 def test_install_overwrite_not_installed(
         mock_packages, mock_archive, mock_fetch, config, install_mockery
 ):
