@@ -500,7 +500,7 @@ class Python(AutotoolsPackage):
         # install libraries into a Frameworks directory
         frameworkprefix = self.get_config_var('PYTHONFRAMEWORKPREFIX')
 
-        if '+shared' in self.spec:
+        if '+shared' in self.spec or self.get_config_var('LDLIBRARY') is not None:
             ldlibrary = self.get_config_var('LDLIBRARY')
 
             if os.path.exists(os.path.join(libdir, ldlibrary)):

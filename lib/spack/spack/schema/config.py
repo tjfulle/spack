@@ -40,6 +40,7 @@ schema = {
                         'tcl': {'type': 'string'},
                         'lmod': {'type': 'string'},
                         'dotkit': {'type': 'string'},
+                        'pymod': {'type': 'string'},
                     },
                 },
                 'source_cache': {'type': 'string'},

@@ -9,6 +9,7 @@ import llnl.util.tty as tty
 
 import spack.cmd.modules.dotkit
 import spack.cmd.modules.lmod
+import spack.cmd.modules.pymod
 import spack.cmd.modules.tcl
 
 description = "manipulate module files"
@@ -25,6 +26,7 @@ def setup_parser(subparser):
     sp = subparser.add_subparsers(metavar='SUBCOMMAND', dest='module_command')
     spack.cmd.modules.dotkit.add_command(sp, _subcommands)
     spack.cmd.modules.lmod.add_command(sp, _subcommands)
+    spack.cmd.modules.pymod.add_command(sp, _subcommands)
     spack.cmd.modules.tcl.add_command(sp, _subcommands)
 
     for name in _deprecated_commands:
@@ -37,7 +39,6 @@ def add_deprecated_command(subparser, name):
         '-m', '--module-type', help=argparse.SUPPRESS,
         choices=spack.modules.module_types.keys(), action='append'
     )
-
 
 def handle_deprecated_command(args, unknown_args):
     command = args.module_command

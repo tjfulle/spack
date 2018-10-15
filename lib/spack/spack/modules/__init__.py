@@ -13,15 +13,18 @@ from __future__ import absolute_import
 from .dotkit import DotkitModulefileWriter
 from .tcl import TclModulefileWriter
 from .lmod import LmodModulefileWriter
+from .pymod import PymodModulefileWriter
 
 __all__ = [
     'DotkitModulefileWriter',
     'TclModulefileWriter',
     'LmodModulefileWriter'
+    'PymodModulefileWriter'
 ]
 
 module_types = {
     'dotkit': DotkitModulefileWriter,
     'tcl': TclModulefileWriter,
-    'lmod': LmodModulefileWriter
+    'lmod': LmodModulefileWriter,
+    'pymod': PymodModulefileWriter
 }
