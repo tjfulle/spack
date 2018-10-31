@@ -149,6 +149,20 @@ properties = {
                     }  # Specific lmod extensions
                 ]
             },
+            'pymod': {
+                'allOf': [
+                    # Base configuration
+                    {'$ref': '#/definitions/module_type_configuration'},
+                    {
+                        'core_compilers': {
+                            '$ref': '#/definitions/array_of_strings'
+                        },
+                        'hierarchical_scheme': {
+                            '$ref': '#/definitions/array_of_strings'
+                        }
+                    }  # Specific pymod extensions
+                ]
+            },
             'tcl': {
                 'allOf': [
                     # Base configuration
