@@ -6,6 +6,7 @@
 from typing import Callable, Dict  # novm
 
 import spack.cmd.modules.lmod
+import spack.cmd.modules.pymod
 import spack.cmd.modules.tcl
 
 description = "generate/manage module files"
@@ -19,6 +20,7 @@ _subcommands = {}  # type: Dict[str, Callable]
 def setup_parser(subparser):
     sp = subparser.add_subparsers(metavar='SUBCOMMAND', dest='module_command')
     spack.cmd.modules.lmod.add_command(sp, _subcommands)
+    spack.cmd.modules.pymod.add_command(sp, _subcommands)
     spack.cmd.modules.tcl.add_command(sp, _subcommands)
 
 

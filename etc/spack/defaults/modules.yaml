@@ -42,11 +42,16 @@ modules:
     # roots:
     #  tcl:    $spack/share/spack/modules
     #  lmod:   $spack/share/spack/lmod
+    #  pymod:   $spack/share/spack/pymod
     # What type of modules to use
     enable:
       - tcl
 
     # Default configurations if lmod is enabled
     lmod:
+      hierarchy:
+        - mpi
+
+    pymod:
       hierarchy:
         - mpi

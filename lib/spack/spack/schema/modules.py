@@ -22,7 +22,7 @@ spec_regex = r'(?!hierarchy|core_specs|verbose|hash_length|whitelist|' \
 
 #: Matches a valid name for a module set
 # Banned names are valid entries at that level in the previous schema
-set_regex = r'(?!enable|lmod|tcl|dotkit|prefix_inspections)^\w[\w-]*'
+set_regex = r'(?!enable|lmod|tcl|dotkit|pymod|prefix_inspections)^\w[\w-]*'
 
 #: Matches an anonymous spec, i.e. a spec without a root name
 anonymous_spec_regex = r'^[\^@%+~]'
@@ -140,6 +140,7 @@ module_config_properties = {
         'properties': {
             'tcl': {'type': 'string'},
             'lmod': {'type': 'string'},
+            'pymod': {'type': 'string'},
         },
     },
     'enable': {
@@ -147,7 +148,7 @@ module_config_properties = {
         'default': [],
         'items': {
             'type': 'string',
-            'enum': ['tcl', 'dotkit', 'lmod']
+            'enum': ['tcl', 'dotkit', 'lmod', 'pymod']
         },
         'deprecatedProperties': {
             'properties': ['dotkit'],
@@ -169,6 +170,20 @@ module_config_properties = {
                     'core_specs': array_of_strings,
                 },
             }  # Specific lmod extensions
+        ]
+    },
+    'pymod': {
+        'allOf': [
+            # Base configuration
+            module_type_configuration,
+            {
+                'type': 'object',
+                'properties': {
+                    'core_compilers': array_of_strings,
+                    'hierarchy': array_of_strings,
+                    'core_specs': array_of_strings,
+                },
+            }  # Specific pymod extensions
         ]
     },
     'tcl': {
