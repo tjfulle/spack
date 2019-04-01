@@ -8,6 +8,7 @@ import argparse
 import llnl.util.tty as tty
 
 import spack.cmd.modules.lmod
+import spack.cmd.modules.pymod
 import spack.cmd.modules.tcl
 
 description = "manipulate module files"
@@ -23,6 +24,7 @@ _deprecated_commands = ('refresh', 'find', 'rm', 'loads')
 def setup_parser(subparser):
     sp = subparser.add_subparsers(metavar='SUBCOMMAND', dest='module_command')
     spack.cmd.modules.lmod.add_command(sp, _subcommands)
+    spack.cmd.modules.pymod.add_command(sp, _subcommands)
     spack.cmd.modules.tcl.add_command(sp, _subcommands)
 
     for name in _deprecated_commands:

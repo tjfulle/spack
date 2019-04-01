@@ -127,7 +127,7 @@ properties = {
                 'default': [],
                 'items': {
                     'type': 'string',
-                    'enum': ['tcl', 'dotkit', 'lmod']
+                    'enum': ['tcl', 'dotkit', 'lmod', 'pymod']
                 },
                 'deprecatedProperties': {
                     'properties': ['dotkit'],
@@ -148,6 +148,19 @@ properties = {
                             'hierarchy': array_of_strings
                         },
                     }  # Specific lmod extensions
+                ]
+            },
+            'pymod': {
+                'allOf': [
+                    # Base configuration
+                    module_type_configuration,
+                    {
+                        'type': 'object',
+                        'properties': {
+                            'core_compilers': array_of_strings,
+                            'hierarchy': array_of_strings
+                        },
+                    }  # Specific pymod extensions
                 ]
             },
             'tcl': {
