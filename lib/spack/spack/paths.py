@@ -49,7 +49,7 @@ packages_path      = os.path.join(repos_path, "builtin")
 mock_packages_path = os.path.join(repos_path, "builtin.mock")
 
 #: User configuration location
-user_config_path = os.path.expanduser('~/.spack')
+user_config_path = os.getenv("SPACK_USER_CONFIG_PATH", os.path.expanduser('~/.spack-pymod'))
 user_bootstrap_path = os.path.join(user_config_path, 'bootstrap')
 user_bootstrap_store = os.path.join(user_bootstrap_path, 'store')
 

@@ -67,13 +67,13 @@ config:
   # identifies Spack staging to avoid accidentally wiping out non-Spack work.
   build_stage:
     - $tempdir/$user/spack-stage
-    - ~/.spack/stage
+    - ~/.spack-pymod/stage
   # - $spack/var/spack/stage
 
   # Directory in which to run tests and store test results.
   # Tests will be stored in directories named by date/time and package
   # name/hash.
-  test_stage: ~/.spack/test
+  test_stage: ~/.spack-pymod/test
 
   # Cache directory for already downloaded source tarballs and archived
   # repositories. This can be purged with `spack clean --downloads`.
@@ -82,7 +82,7 @@ config:
 
   # Cache directory for miscellaneous files, like the package index.
   # This can be purged with `spack clean --misc-cache`
-  misc_cache: ~/.spack/cache
+  misc_cache: ~/.spack-pymod/cache
 
 
   # Timeout in seconds used for downloading sources etc. This only applies

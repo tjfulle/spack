@@ -47,3 +47,7 @@ modules:
   lmod:
     hierarchy:
       - mpi
+
+  pymod:
+    hierarchy:
+      - mpi
