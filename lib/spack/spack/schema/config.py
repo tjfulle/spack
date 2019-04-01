@@ -43,6 +43,7 @@ properties = {
                 'properties': {
                     'tcl': {'type': 'string'},
                     'lmod': {'type': 'string'},
+                    'pymod': {'type': 'string'},
                     'dotkit': {'type': 'string'},
                 },
                 'deprecatedProperties': {
