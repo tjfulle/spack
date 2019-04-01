@@ -20,7 +20,8 @@ properties = {
                         'type': 'object',
                         'properties': {
                             'tcl': {'type': 'string'},
-                            'lmod': {'type': 'string'}
+                            'lmod': {'type': 'string'},
+                            'pymod': {'type': 'string'}
                         }
                     }
                 }

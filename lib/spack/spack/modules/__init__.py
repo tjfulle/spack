@@ -12,14 +12,17 @@ from __future__ import absolute_import
 from .common import disable_modules
 from .lmod import LmodModulefileWriter
 from .tcl import TclModulefileWriter
+from .pymod import PymodModulefileWriter
 
 __all__ = [
     'TclModulefileWriter',
     'LmodModulefileWriter',
+    'PymodModulefileWriter'
     'disable_modules'
 ]
 
 module_types = {
     'tcl': TclModulefileWriter,
-    'lmod': LmodModulefileWriter
+    'lmod': LmodModulefileWriter,
+    'pymod': PymodModulefileWriter,
 }

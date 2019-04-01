@@ -23,7 +23,7 @@ spec_regex = r'(?!hierarchy|core_specs|verbose|hash_length|whitelist|' \
              r'defaults)(^\w[\w-]*)'
 
 #: Matches a valid name for a module set
-valid_module_set_name = r'^(?!arch_folder$|lmod$|roots$|enable$|prefix_inspections$|'\
+valid_module_set_name = r'^(?!arch_folder$|lmod$|pymod$|roots$|enable$|prefix_inspections$|'\
                         r'tcl$|use_view$)\w[\w-]*$'
 
 #: Matches an anonymous spec, i.e. a spec without a root name
@@ -130,6 +130,7 @@ module_config_properties = {
         'properties': {
             'tcl': {'type': 'string'},
             'lmod': {'type': 'string'},
+            'pymod': {'type': 'string'},
         },
     },
     'enable': {
@@ -137,7 +138,7 @@ module_config_properties = {
         'default': [],
         'items': {
             'type': 'string',
-            'enum': ['tcl', 'lmod']
+            'enum': ['tcl', 'lmod', 'pymod']
         }
     },
     'lmod': {
@@ -152,6 +153,20 @@ module_config_properties = {
                     'core_specs': array_of_strings,
                 },
             }  # Specific lmod extensions
+        ]
+    },
+    'pymod': {
+        'allOf': [
+            # Base configuration
+            module_type_configuration,
+            {
+                'type': 'object',
+                'properties': {
+                    'core_compilers': array_of_strings,
+                    'hierarchy': array_of_strings,
+                    'core_specs': array_of_strings,
+                },
+            }  # Specific pymod extensions
         ]
     },
     'tcl': {
@@ -204,10 +219,10 @@ properties = {
                 'properties': module_config_properties
             },
             # Deprecated top-level keys (ignored in 0.18 with a warning)
-            '^(arch_folder|lmod|roots|enable|tcl|use_view)$': {}
+            '^(arch_folder|lmod|pymod|roots|enable|tcl|use_view)$': {}
         },
         'deprecatedProperties': {
-            'properties': ['arch_folder', 'lmod', 'roots', 'enable', 'tcl', 'use_view'],
+            'properties': ['arch_folder', 'lmod', 'pymod', 'roots', 'enable', 'tcl', 'use_view'],
             'message': deprecation_msg_default_module_set,
             'error': False
         }
@@ -235,7 +250,7 @@ def update(data):
     """
     changed = False
 
-    deprecated_top_level_keys = ('arch_folder', 'lmod', 'roots', 'enable',
+    deprecated_top_level_keys = ('arch_folder', 'lmod', 'pymod', 'roots', 'enable',
                                  'tcl', 'use_view')
 
     # Don't update when we already have a default module set
