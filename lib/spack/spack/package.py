@@ -1108,6 +1108,7 @@ class PackageBase(six.with_metaclass(PackageMeta, PackageViewMixin, object)):
         # associated with the package, append their fetcher to the
         # composite.
         root_fetcher = fs.for_package_version(self, self.version)
+        root_fetcher.package = self
         fetcher = fs.FetchStrategyComposite()  # Composite fetcher
         fetcher.append(root_fetcher)  # Root fetcher is always present
         resources = self._get_needed_resources()
@@ -1127,6 +1128,7 @@ class PackageBase(six.with_metaclass(PackageMeta, PackageViewMixin, object)):
     @fetcher.setter
     def fetcher(self, f):
         self._fetcher = f
+        self._fetcher.package = self
 
     def dependencies_of_type(self, *deptypes):
         """Get dependencies that can possibly have these deptypes.
