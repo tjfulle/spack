@@ -980,8 +980,22 @@ class GitFetchStrategy(VCSFetchStrategy):
 
         # Init submodules if the user asked for them.
         if self.submodules:
+            args = ['submodule', 'update', '--init']
+            if isinstance(self.submodules, (list, tuple)):
+                args.extend(self.submodules)
+            elif isinstance(self.submodules, six.string_types):
+                args.extend([_.strip() for _ in self.submodules.split(",") if _.split()])
+            elif callable(self.submodules):
+                # User defined function, allows specifying submodules on a per-variant
+                # basis
+                args.extend(self.submodules(self.package.spec))
+            else:
+                args.append("--recursive")
             with working_dir(self.stage.source_path):
-                args = ['submodule', 'update', '--init', '--recursive']
+                if not spack.config.get('config:debug'):
+                    args.insert(1, '--quiet')
+                git(*args)
+            with working_dir(self.stage.source_path):
                 if not spack.config.get('config:debug'):
                     args.insert(1, '--quiet')
                 git(*args)
