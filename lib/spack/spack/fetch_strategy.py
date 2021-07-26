@@ -995,10 +995,6 @@ class GitFetchStrategy(VCSFetchStrategy):
                 if not spack.config.get('config:debug'):
                     args.insert(1, '--quiet')
                 git(*args)
-            with working_dir(self.stage.source_path):
-                if not spack.config.get('config:debug'):
-                    args.insert(1, '--quiet')
-                git(*args)
 
     def archive(self, destination):
         super(GitFetchStrategy, self).archive(destination, exclude='.git')
