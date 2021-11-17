@@ -9,7 +9,7 @@ from spack import *
 class Libzmq(AutotoolsPackage):
     """The ZMQ networking/concurrency library and core API"""
 
-    homepage = "http://zguide.zeromq.org/"
+    homepage = "https://zguide.zeromq.org/"
     url      = "https://github.com/zeromq/libzmq/releases/download/v4.3.2/zeromq-4.3.2.tar.gz"
     git      = "https://github.com/zeromq/libzmq.git"
 
@@ -40,6 +40,8 @@ class Libzmq(AutotoolsPackage):
     depends_on('automake', type='build', when='@develop')
     depends_on('libtool', type='build', when='@develop')
     depends_on('pkgconfig', type='build')
+    depends_on('docbook-xml', type='build')
+    depends_on('docbook-xsl', type='build')
 
     depends_on('libbsd', type='link', when='@4.3.3: platform=linux')
     depends_on('libbsd', type='link', when='@4.3.3: platform=cray')

@@ -16,12 +16,6 @@ Spack.  The simplest store could just contain prefixes named by DAG hash,
 but we use a fancier directory layout to make browsing the store and
 debugging easier.
 
-The directory layout is currently hard-coded to be a YAMLDirectoryLayout,
-so called because it stores build metadata within each prefix, in
-`spec.yaml` files. In future versions of Spack we may consider allowing
-install trees to define their own layouts with some per-tree
-configuration.
-
 """
 import contextlib
 import os
@@ -162,7 +156,7 @@ class Store(object):
         self.hash_length = hash_length
         self.db = spack.database.Database(
             root, upstream_dbs=retrieve_upstream_dbs())
-        self.layout = spack.directory_layout.YamlDirectoryLayout(
+        self.layout = spack.directory_layout.DirectoryLayout(
             root, projections=projections, hash_length=hash_length)
 
     def reindex(self):
@@ -242,16 +236,28 @@ layout = llnl.util.lang.LazyReference(_store_layout)
 
 
 def reinitialize():
-    """Restore globals to the same state they would have at start-up"""
+    """Restore globals to the same state they would have at start-up. Return a token
+    containing the state of the store before reinitialization.
+    """
     global store
     global root, unpadded_root, db, layout
 
-    store = llnl.util.lang.Singleton(_store)
+    token = store, root, unpadded_root, db, layout
 
+    store = llnl.util.lang.Singleton(_store)
     root = llnl.util.lang.LazyReference(_store_root)
     unpadded_root = llnl.util.lang.LazyReference(_store_unpadded_root)
     db = llnl.util.lang.LazyReference(_store_db)
     layout = llnl.util.lang.LazyReference(_store_layout)
+
+    return token
+
+
+def restore(token):
+    """Restore the environment from a token returned by reinitialize"""
+    global store
+    global root, unpadded_root, db, layout
+    store, root, unpadded_root, db, layout = token
 
 
 def retrieve_upstream_dbs():
@@ -301,9 +307,10 @@ def use_store(store_or_path):
     db, layout = store.db, store.layout
     root, unpadded_root = store.root, store.unpadded_root
 
-    yield temporary_store
-
-    # Restore the original store
-    store = original_store
-    db, layout = original_store.db, original_store.layout
-    root, unpadded_root = original_store.root, original_store.unpadded_root
+    try:
+        yield temporary_store
+    finally:
+        # Restore the original store
+        store = original_store
+        db, layout = original_store.db, original_store.layout
+        root, unpadded_root = original_store.root, original_store.unpadded_root

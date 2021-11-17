@@ -20,6 +20,7 @@ class Parsec(CMakePackage, CudaPackage):
     url         = "https://bitbucket.org/icldistcomp/parsec/get/parsec-3.0.2012.tar.bz2"
     list_url    = "https://bitbucket.org/icldistcomp/parsec/downloads/?tab=tags"
     maintainers = ['abouteiller', 'bosilca', 'herault']
+    tags = ['e4s']
 
     test_requires_compiler = True
 
@@ -39,6 +40,8 @@ class Parsec(CMakePackage, CudaPackage):
 
     depends_on('cmake@3.16:', type='build')
     depends_on('python', type='build')
+    depends_on('flex', type='build')
+    depends_on('bison', type='build')
     depends_on('hwloc')
     depends_on('mpi')
     depends_on('papi', when='+profile')

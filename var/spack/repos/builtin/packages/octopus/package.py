@@ -8,7 +8,7 @@ import llnl.util.tty as tty
 from spack import *
 
 
-class Octopus(Package):
+class Octopus(Package, CudaPackage):
     """A real-space finite-difference (time-dependent) density-functional
     theory code."""
 
@@ -35,12 +35,12 @@ class Octopus(Package):
     depends_on('blas')
     depends_on('gsl@1.9:')
     depends_on('lapack')
-    depends_on('libxc@2:2.99', when='@:5.99')
-    depends_on('libxc@2:3.99', when='@6:7.99')
-    depends_on('libxc@2:4.99', when='@8:9.99')
+    depends_on('libxc@2.0:2', when='@:5')
+    depends_on('libxc@2.0:3', when='@6:7')
+    depends_on('libxc@2.0:4', when='@8:9')
     depends_on('libxc@3:5.0.0', when='@10:')
     depends_on('mpi')
-    depends_on('fftw@3:+mpi+openmp', when='@8:9.99')
+    depends_on('fftw@3:+mpi+openmp', when='@8:9')
     depends_on('fftw-api@3:', when='@10:')
     depends_on('metis@5:', when='+metis')
     depends_on('parmetis', when='+parmetis')
@@ -114,10 +114,15 @@ class Octopus(Package):
                 '--with-scalapack=%s' % spec['scalapack'].libs
             ])
 
-            # --with-etsf-io-prefix=
-            # --with-sparskit=${prefix}/lib/libskit.a
-            # --with-pfft-prefix=${prefix} --with-mpifftw-prefix=${prefix}
-            # --with-berkeleygw-prefix=${prefix}
+        if '+cuda' in spec:
+            args.extend([
+                '--enable-cuda'
+            ])
+
+        # --with-etsf-io-prefix=
+        # --with-sparskit=${prefix}/lib/libskit.a
+        # --with-pfft-prefix=${prefix} --with-mpifftw-prefix=${prefix}
+        # --with-berkeleygw-prefix=${prefix}
 
         # When preprocessor expands macros (i.e. CFLAGS) defined as quoted
         # strings the result may be > 132 chars and is terminated.
